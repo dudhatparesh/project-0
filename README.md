@@ -8,10 +8,10 @@ The Project is developed using kotlin.
 
 Project Status
 1) Completed Modules
-    i) Dagger 2
-    ii) ButterKnife
+    1) Dagger 2
+    2) ButterKnife
+    3) MVP Architecture
 2) ToDo Modules
-    i) MVP Architecture
-    ii) Room
-    iii) Unit Tests using Mockito
-    iv) Espresso UI Testing
+    1) Room Database Library
+    2) Unit Tests using Mockito
+    3) Espresso UI Testing

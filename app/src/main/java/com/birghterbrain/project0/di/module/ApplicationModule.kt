@@ -3,8 +3,10 @@ package com.birghterbrain.project0.di.module
 import android.app.Application
 import android.content.Context
 import com.birghterbrain.project0.di.ApplicationContext
+import com.birghterbrain.project0.di.DatabaseInfo
 import dagger.Module
 import dagger.Provides
+import javax.inject.Named
 
 @Module
 class ApplicationModule(application: Application) {
@@ -21,10 +23,12 @@ class ApplicationModule(application: Application) {
     }
 
     @Provides
+    @Named("databaseName")
     fun provideDatabaseName(): String{
         return "main.db"
     }
     @Provides
+    @Named("databaseVersion")
     fun provideDatabaseVersion():Int{
         return 1
     }
