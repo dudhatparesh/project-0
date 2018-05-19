@@ -1,4 +1,4 @@
-package com.birghterbrain.sellit
+package com.birghterbrain.project0
 
 import android.app.Application
 

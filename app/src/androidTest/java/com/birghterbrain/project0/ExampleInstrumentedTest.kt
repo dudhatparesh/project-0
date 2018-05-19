@@ -1,4 +1,4 @@
-package com.birghterbrain.sellit
+package com.birghterbrain.project0
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4

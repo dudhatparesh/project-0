@@ -1,10 +1,10 @@
-package com.birghterbrain.sellit.data
+package com.birghterbrain.project0.data
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import com.birghterbrain.sellit.di.ApplicationContext
-import com.birghterbrain.sellit.di.DatabaseInfo
+import com.birghterbrain.project0.di.ApplicationContext
+import com.birghterbrain.project0.di.DatabaseInfo
 import javax.inject.Inject
 import javax.inject.Singleton
 

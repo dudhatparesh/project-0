@@ -1,7 +1,7 @@
-package com.birghterbrain.sellit.di.component
+package com.birghterbrain.project0.di.component
 
-import com.birghterbrain.sellit.di.PerFragment
-import com.birghterbrain.sellit.di.module.FragmentModule
+import com.birghterbrain.project0.di.PerFragment
+import com.birghterbrain.project0.di.module.FragmentModule
 import dagger.Component
 
 @PerFragment

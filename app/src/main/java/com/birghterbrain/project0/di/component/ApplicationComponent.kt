@@ -1,10 +1,10 @@
-package com.birghterbrain.sellit.di.component
+package com.birghterbrain.project0.di.component
 
 import android.app.Application
 import android.content.Context
-import com.birghterbrain.sellit.MainApplication
-import com.birghterbrain.sellit.di.ApplicationContext
-import com.birghterbrain.sellit.di.module.ApplicationModule
+import com.birghterbrain.project0.MainApplication
+import com.birghterbrain.project0.di.ApplicationContext
+import com.birghterbrain.project0.di.module.ApplicationModule
 import dagger.Component
 import javax.inject.Singleton
 

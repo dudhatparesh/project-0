@@ -1,4 +1,4 @@
-package com.birghterbrain.sellit.di
+package com.birghterbrain.project0.di
 
 import javax.inject.Qualifier
 import javax.inject.Scope

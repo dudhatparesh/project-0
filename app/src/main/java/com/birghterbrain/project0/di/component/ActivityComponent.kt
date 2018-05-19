@@ -1,8 +1,8 @@
-package com.birghterbrain.sellit.di.component
+package com.birghterbrain.project0.di.component
 
-import com.birghterbrain.sellit.MainActivity
-import com.birghterbrain.sellit.di.PerActivity
-import com.birghterbrain.sellit.di.module.ActivityModule
+import com.birghterbrain.project0.MainActivity
+import com.birghterbrain.project0.di.PerActivity
+import com.birghterbrain.project0.di.module.ActivityModule
 import dagger.Component
 
 @PerActivity

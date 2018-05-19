@@ -1,4 +1,4 @@
-package com.birghterbrain.sellit
+package com.birghterbrain.project0
 
 import android.os.Bundle
 import android.support.design.widget.Snackbar

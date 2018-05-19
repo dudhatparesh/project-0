@@ -1,4 +1,4 @@
-package com.birghterbrain.sellit.di
+package com.birghterbrain.project0.di
 
 import kotlin.annotation.Retention
 import javax.inject.Qualifier

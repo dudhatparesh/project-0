@@ -1,8 +1,8 @@
-package com.birghterbrain.sellit.di.module
+package com.birghterbrain.project0.di.module
 
 import android.app.Activity
 import android.content.Context
-import com.birghterbrain.sellit.di.ActivityContext
+import com.birghterbrain.project0.di.ActivityContext
 import dagger.Module
 import dagger.Provides
 
