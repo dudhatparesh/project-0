@@ -2,6 +2,8 @@ package com.birghterbrain.project0.ui.main
 
 import android.os.Bundle
 import android.support.design.widget.Snackbar
+import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentManager
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -15,25 +17,29 @@ import javax.inject.Inject
 class MainActivity : BaseActivity(), MainMvpView{
     @Inject
     lateinit var mainPresenter: MainPresenter
+
+    companion object {
+        val FRAGMENT_LIST_ITEMS = 0
+        val FRAGMENT_ADD_ITEM = 1
+        val FRAGMENT_ITEM_DETAIL = 2
+    }
     override fun getContentView(): Int {
         return R.layout.activity_main
     }
 
-    override fun displaySnackbar(view:View,message: String) {
-        Snackbar.make(view, message, Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setSupportActionBar(toolbar)
         getComponent().inject(this)
         mainPresenter.attachView(this)
+        mainPresenter.displayFragment(FRAGMENT_LIST_ITEMS)
     }
 
-    @OnClick(R.id.fab)
-    fun fabClicked(view: View){
-        mainPresenter.fabClicked(view,"Hello World")
+    override fun displayFragment(fragment: Fragment){
+        supportFragmentManager.beginTransaction().replace(R.id.container,fragment)
+                .addToBackStack("")
+                .commit()
     }
 
 }

@@ -1,6 +1,6 @@
 package com.birghterbrain.project0.ui.base
 
-open class BasePresenter<T: MvpView>: Presenter<T>{
+open class BasePresenter<T: MvpView> : Presenter<T>{
     var view: T? = null
     override fun attachView(view: T) {
         this.view = view

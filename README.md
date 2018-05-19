@@ -11,7 +11,9 @@ Project Status
     1) Dagger 2
     2) ButterKnife
     3) MVP Architecture
+    4) Room Database Library
 2) ToDo Modules
-    1) Room Database Library
-    2) Unit Tests using Mockito
-    3) Espresso UI Testing
+    1) Permissions for Location, Camera, External Storage
+    2) Refactoring
+    3) Unit Tests using Mockito
+    4) Espresso UI Testing

@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import com.birghterbrain.project0.MainApplication
 import com.birghterbrain.project0.data.DataManager
+import com.birghterbrain.project0.data.AppDatabase
 import com.birghterbrain.project0.data.DatabaseHelper
 import com.birghterbrain.project0.di.ApplicationContext
 import com.birghterbrain.project0.di.module.ApplicationModule

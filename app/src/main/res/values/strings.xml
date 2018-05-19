@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Project 0</string>
     <string name="action_settings">Settings</string>
+    <string name="item_name">Item Name</string>
+    <string name="item_description">Description</string>
+    <string name="amount">Amount</string>
 </resources>
