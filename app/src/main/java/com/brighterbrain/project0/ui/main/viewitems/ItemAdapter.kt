@@ -1,11 +1,13 @@
 package com.brighterbrain.project0.ui.main.viewitems
 
 import android.content.Context
+import android.net.Uri
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.brighterbrain.project0.R
 import com.brighterbrain.project0.data.model.Item
+import com.bumptech.glide.Glide
 
 class ItemAdapter constructor(var items:List<Item>, var context: Context?)
     : RecyclerView.Adapter<ItemViewHolder>() {
@@ -22,6 +24,12 @@ class ItemAdapter constructor(var items:List<Item>, var context: Context?)
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val item = items[position]
         holder.tvName.text = item.name
+        Glide.with(context!!).load(Uri.parse(item.imagePath)).into(holder.ivImage)
+        holder.tvDesc.text = item.description
+        holder.tvAmount.text = StringBuilder().append(item.amount.toString())
+                .append(" ")
+                .append(item.currency)
+                .toString()
     }
 
 }

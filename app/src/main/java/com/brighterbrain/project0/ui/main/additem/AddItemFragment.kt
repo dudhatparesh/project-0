@@ -10,9 +10,6 @@ import android.support.v4.content.FileProvider
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.Toast
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
@@ -24,8 +21,10 @@ import pub.devrel.easypermissions.AppSettingsDialog
 import javax.inject.Inject
 import pub.devrel.easypermissions.EasyPermissions
 import java.io.IOException
-import android.graphics.BitmapFactory
+import android.net.Uri
+import android.widget.*
 import com.brighterbrain.project0.MainApplication
+import com.bumptech.glide.Glide
 
 
 class AddItemFragment : BaseFragment(), AddItemView {
@@ -36,7 +35,7 @@ class AddItemFragment : BaseFragment(), AddItemView {
         const val RC_CAPTURE_IMAGE =1001
         const val RC_GALLARY_IMAGE = 1002
     }
-    var rootView: View? = null
+    private var rootView: View? = null
 
     @BindView(R.id.et_name)
     lateinit var etName: EditText
@@ -50,19 +49,26 @@ class AddItemFragment : BaseFragment(), AddItemView {
     @BindView(R.id.iv_image)
     lateinit var ivImage: ImageView
 
+    @BindView(R.id.sp_currency)
+    lateinit var spCurrency: Spinner
+
     @Inject
     lateinit var addItemPresenter: AddItemPresenter
 
-    var photoImagePath: String? = null
+    var photoImageUri: Uri? = null
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_add_item, container, false)
             ButterKnife.bind(this, rootView!!)
             getComponent().inject(this)
             addItemPresenter.attachView(this)
+
+            spCurrency.adapter = ArrayAdapter<String>(context,
+                    android.R.layout.simple_expandable_list_item_1,arrayOf("USD","INR","GBP"))
         }
         return rootView!!
     }
+
 
     override fun displayMessage(message: String?) {
         Toast.makeText(context, message, Toast.LENGTH_LONG).show()
@@ -71,7 +77,7 @@ class AddItemFragment : BaseFragment(), AddItemView {
     @OnClick(R.id.fab_save)
     fun saveItem() {
         addItemPresenter.addItem(etName.text.toString(), etDesc.text.toString(),
-                etAmount.text.toString())
+                etAmount.text.toString(),spCurrency.selectedItem.toString(),photoImageUri?.toString())
     }
 
     @OnClick(R.id.iv_image)
@@ -115,11 +121,10 @@ class AddItemFragment : BaseFragment(), AddItemView {
         if(takePictureIntent.resolveActivity(activity?.packageManager)!=null){
             try{
                 val photoFile = FileUtils.createImageFile(context!!)
-                photoImagePath = photoFile.absolutePath
-                val photoUri = FileProvider.getUriForFile(context!!,
+                photoImageUri = FileProvider.getUriForFile(context!!,
                         MainApplication.get(activity!!).applicationContext.packageName+".fileprovider",
                         photoFile)
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,photoUri)
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,photoImageUri)
 
                 startActivityForResult(takePictureIntent,RC_CAPTURE_IMAGE)
             }catch (e:IOException){
@@ -155,48 +160,19 @@ class AddItemFragment : BaseFragment(), AddItemView {
 
             if(resultCode == Activity.RESULT_OK){
                 when(requestCode){
-                    RC_CAPTURE_IMAGE->setPicFromCamera()
-                    RC_GALLARY_IMAGE->setPicFromGallery(data)
+                    RC_CAPTURE_IMAGE->{
+                        Glide.with(this).load(photoImageUri).into(ivImage)
+                    }
+                    RC_GALLARY_IMAGE->{
+                        if (data != null) {
+                            photoImageUri = data.data
+                            Glide.with(this).load(photoImageUri).into(ivImage)
+
+                        }
+                    }
                 }
             }
 
         super.onActivityResult(requestCode, resultCode, data)
-    }
-
-    private fun setPicFromGallery(data: Intent?) {
-            if (data != null) {
-                val contentUri = data.data
-                try {
-                    val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, contentUri)
-                    ivImage.setImageBitmap(bitmap)
-
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    Toast.makeText(context, e.localizedMessage, Toast.LENGTH_SHORT).show()
-                }
-            }
-    }
-    private fun setPicFromCamera() {
-        // Get the dimensions of the View
-        val targetW = ivImage.width
-        val targetH = ivImage.height
-
-        // Get the dimensions of the bitmap
-        val bmOptions = BitmapFactory.Options()
-        bmOptions.inJustDecodeBounds = true
-        BitmapFactory.decodeFile(photoImagePath, bmOptions)
-        val photoW = bmOptions.outWidth
-        val photoH = bmOptions.outHeight
-
-        // Determine how much to scale down the image
-        val scaleFactor = Math.min(photoW / targetW, photoH / targetH)
-
-        // Decode the image file into a Bitmap sized to fill the View
-        bmOptions.inJustDecodeBounds = false
-        bmOptions.inSampleSize = scaleFactor
-        bmOptions.inPurgeable = true
-
-        val bitmap = BitmapFactory.decodeFile(photoImagePath, bmOptions)
-        ivImage.setImageBitmap(bitmap)
     }
 }

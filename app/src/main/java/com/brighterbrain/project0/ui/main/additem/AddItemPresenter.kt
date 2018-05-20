@@ -1,8 +1,7 @@
 package com.brighterbrain.project0.ui.main.additem
 
-import android.Manifest
 import android.app.Activity
-import android.support.v4.app.FragmentActivity
+import android.net.Uri
 import com.brighterbrain.project0.R
 import com.brighterbrain.project0.data.DataManager
 import com.brighterbrain.project0.data.model.Item
@@ -15,7 +14,7 @@ import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class AddItemPresenter @Inject constructor(var dataManager: DataManager): BasePresenter<AddItemView>(){
-    fun addItem(itemName: String, itemDesc: String, amount: String) {
+    fun addItem(itemName: String, itemDesc: String, amount: String, currency: String, photoUri: String?) {
         val addItemObserver: CompletableObserver = object : CompletableObserver {
             override fun onSubscribe(d: Disposable) {
                 disposable.add(d)
@@ -32,7 +31,8 @@ class AddItemPresenter @Inject constructor(var dataManager: DataManager): BasePr
             }
         }
         dataManager.addItem(Item(name = itemName,description = itemDesc,amount = amount.toDouble(),
-                currency = "INR"))
+                imagePath = photoUri,
+                currency = currency))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(addItemObserver)
