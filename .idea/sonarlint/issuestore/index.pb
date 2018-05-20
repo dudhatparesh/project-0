@@ -65,3 +65,13 @@ F
 Papp/src/main/java/com/brighterbrain/project0/ui/main/viewitems/ItemViewHolder.kt,2\4\24241a2a1ab4c1fb49d4c175f85c1653af49ecc0
 }
 Mapp/src/main/java/com/brighterbrain/project0/ui/main/viewitems/ItemAdapter.kt,a\1\a1c7f36941878197ed7c4feee30c6394d2850e5e
+q
+Aapp/src/main/java/com/brighterbrain/project0/utils/CommonUtils.kt,b\2\b2e6c6386f0d86d1049f4d9551e52cd7f0cb2e0b
+H
+app/google-services.json,f\d\fd8d34b142d02ec743a8efefefd2c097961666e9
+>
+app/.gitignore,5\1\51e1c5d383dfaa35e0e7e5873a0a99355a86880f
+s
+Capp/src/main/java/com/brighterbrain/project0/data/FirebaseHelper.kt,5\d\5d355221c1c5774d274004ac7da5c8185cc5ec56
+l
+<app/src/main/java/com/brighterbrain/project0/data/ItemDao.kt,8\d\8dd5e12d758528f469d0f8de5dd262f33faccaba

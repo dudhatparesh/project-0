@@ -29,5 +29,5 @@ data class Item(
     var amount: Double? = null,
 
     @ColumnInfo(name = "currency")
-    var currency: String
+    var currency: String? = null
 )

@@ -67,5 +67,8 @@ dependencies {
     //Firebase
 
     implementation 'com.google.firebase:firebase-database:15.0.1'
+    //Test Dependencies
+    testImplementation 'org.mockito:mockito-core:2.18.0'
+
 }
 apply plugin: 'com.google.gms.google-services'

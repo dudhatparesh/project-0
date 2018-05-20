@@ -16,7 +16,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class DataManager @Inject constructor(@ApplicationContext private var appContext: Context,
+open class DataManager @Inject constructor(@ApplicationContext private var appContext: Context,
                                       private var databaseHelper: DatabaseHelper,
                                       private var prefHelper: PrefHelper,
                                       private var firebaseHelper: FirebaseHelper) {
