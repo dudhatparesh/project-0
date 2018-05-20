@@ -1,7 +1,7 @@
 package com.brighterbrain.project0.ui.main.additem
 
 import android.app.Activity
-import android.net.Uri
+import android.location.Location
 import com.brighterbrain.project0.R
 import com.brighterbrain.project0.data.DataManager
 import com.brighterbrain.project0.data.model.Item
@@ -14,7 +14,8 @@ import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class AddItemPresenter @Inject constructor(var dataManager: DataManager): BasePresenter<AddItemView>(){
-    fun addItem(itemName: String, itemDesc: String, amount: String, currency: String, photoUri: String?) {
+    fun addItem(itemName: String, itemDesc: String, amount: String, currency: String, photoUri: String?,
+                lastLocation: Location?) {
         val addItemObserver: CompletableObserver = object : CompletableObserver {
             override fun onSubscribe(d: Disposable) {
                 disposable.add(d)
@@ -32,6 +33,8 @@ class AddItemPresenter @Inject constructor(var dataManager: DataManager): BasePr
         }
         dataManager.addItem(Item(name = itemName,description = itemDesc,amount = amount.toDouble(),
                 imagePath = photoUri,
+                lattitude = lastLocation?.latitude,
+                longitude = lastLocation?.longitude,
                 currency = currency))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -43,6 +46,7 @@ class AddItemPresenter @Inject constructor(var dataManager: DataManager): BasePr
             if (dataManager.hasPermissions( perms)) {
                 when(requestCode){
                     AddItemFragment.RC_CAMERA -> view?.captureImage()
+                    AddItemFragment.RC_LOCATION -> view?.checkLocationSettings()
                 }
             } else {
 

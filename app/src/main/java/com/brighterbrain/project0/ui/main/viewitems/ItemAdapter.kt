@@ -30,6 +30,10 @@ class ItemAdapter constructor(var items:List<Item>, var context: Context?)
                 .append(" ")
                 .append(item.currency)
                 .toString()
+        holder.tvLocation.text = StringBuilder().append(item.lattitude)
+                .append(",")
+                .append(item.longitude)
+                .toString()
     }
 
 }

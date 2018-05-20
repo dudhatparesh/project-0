@@ -8,5 +8,7 @@ interface AddItemView: MvpView{
     fun requestPermission(rationaleText: String?, requestCode: Int, perms: Array<String>)
     fun displayPermissionAlertDialog()
     fun captureImage()
-    fun getImageFromGallary()
+    fun getImageFromGallery()
+    fun fetchLocation()
+    fun checkLocationSettings()
 }

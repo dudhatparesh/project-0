@@ -12,8 +12,9 @@ Project Status
     2) ButterKnife
     3) MVP Architecture
     4) Room Database Library
+    5) Save Item with Location, External Storage & Camera
+    6) Firebase Store Object   
 2) ToDo Modules
-    1) Permissions for Location, Camera, External Storage
-    2) Refactoring
+    1) Refactoring
     3) Unit Tests using Mockito
     4) Espresso UI Testing

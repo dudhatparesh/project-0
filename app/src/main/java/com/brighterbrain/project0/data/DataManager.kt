@@ -18,12 +18,17 @@ import javax.inject.Singleton
 @Singleton
 class DataManager @Inject constructor(@ApplicationContext private var appContext: Context,
                                       private var databaseHelper: DatabaseHelper,
-                                      private var prefHelper: PrefHelper) {
+                                      private var prefHelper: PrefHelper,
+                                      private var firebaseHelper: FirebaseHelper) {
     fun addItem(item: Item):Completable{
         return object:Completable(){
             override fun subscribeActual(s: CompletableObserver?) {
                 try {
-                    databaseHelper.appDatabase.itemDao().insertAll(listOf(item))
+                    val id = databaseHelper.appDatabase.itemDao().insert(item)
+                    firebaseHelper.firebaseDatabase.getReference("project-0")
+                            .child("items")
+                            .child(id.toString())
+                            .setValue(item)
                     s?.onComplete()
                 }catch (e: Exception){
                     s?.onError(e)

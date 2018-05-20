@@ -9,6 +9,7 @@ import com.brighterbrain.project0.data.AppDatabase
 import com.brighterbrain.project0.data.DatabaseHelper
 import com.brighterbrain.project0.di.ApplicationContext
 import com.brighterbrain.project0.di.module.ApplicationModule
+import com.google.firebase.database.FirebaseDatabase
 import dagger.Component
 import javax.inject.Singleton
 
@@ -27,4 +28,6 @@ interface ApplicationComponent {
     fun getDatabaseHelper(): DatabaseHelper
 
     fun getSharedPreferences(): SharedPreferences
+
+    fun getFirebaseDatabase(): FirebaseDatabase
 }

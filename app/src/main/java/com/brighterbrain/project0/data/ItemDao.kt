@@ -8,7 +8,7 @@ import com.brighterbrain.project0.data.model.Item
 
 @Dao
 interface ItemDao{
-    @Query("SELECT * FROM item")
+    @Query("SELECT * FROM item ORDER BY id DESC")
     fun getAllItems(): List<Item>
 
     @Insert
@@ -16,4 +16,7 @@ interface ItemDao{
 
     @Delete
     fun deleteItem(item: Item)
+
+    @Insert
+    fun insert(item: Item):Long
 }

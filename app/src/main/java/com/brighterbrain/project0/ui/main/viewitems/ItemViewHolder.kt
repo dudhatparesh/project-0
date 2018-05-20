@@ -21,6 +21,9 @@ class ItemViewHolder(item: View) : RecyclerView.ViewHolder(item) {
     @BindView(R.id.tv_amount)
     lateinit var tvAmount: TextView
 
+    @BindView(R.id.tv_location)
+    lateinit var tvLocation: TextView
+
     init {
         ButterKnife.bind(this, item)
     }

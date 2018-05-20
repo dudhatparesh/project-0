@@ -4,6 +4,8 @@ import android.Manifest
 import android.app.Activity
 import android.app.Dialog
 import android.content.Intent
+import android.content.IntentSender
+import android.location.Location
 import android.os.Bundle
 import android.provider.MediaStore
 import android.support.v4.content.FileProvider
@@ -24,19 +26,27 @@ import java.io.IOException
 import android.net.Uri
 import android.widget.*
 import com.brighterbrain.project0.MainApplication
+import com.brighterbrain.project0.utils.CommonUtils
 import com.bumptech.glide.Glide
+import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.location.*
+import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.gms.tasks.OnSuccessListener
 
 
 class AddItemFragment : BaseFragment(), AddItemView {
 
+
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
     companion object {
         const val RC_CAMERA:Int = 101
         const val RC_LOCATION:Int = 102
         const val RC_CAPTURE_IMAGE =1001
         const val RC_GALLARY_IMAGE = 1002
+        const val REQUEST_CHECK_SETTINGS =1003
     }
     private var rootView: View? = null
-
+    private var lastLocation : Location? = null
     @BindView(R.id.et_name)
     lateinit var etName: EditText
 
@@ -66,6 +76,7 @@ class AddItemFragment : BaseFragment(), AddItemView {
             spCurrency.adapter = ArrayAdapter<String>(context,
                     android.R.layout.simple_expandable_list_item_1,arrayOf("USD","INR","GBP"))
         }
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity!!)
         return rootView!!
     }
 
@@ -75,9 +86,15 @@ class AddItemFragment : BaseFragment(), AddItemView {
     }
 
     @OnClick(R.id.fab_save)
-    fun saveItem() {
+    @AfterPermissionGranted(RC_LOCATION)
+    fun checkLocation() {
+        addItemPresenter.checkPermissions(activity!!, RC_LOCATION, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION))
+
+    }
+    fun saveItem(){
         addItemPresenter.addItem(etName.text.toString(), etDesc.text.toString(),
-                etAmount.text.toString(),spCurrency.selectedItem.toString(),photoImageUri?.toString())
+                etAmount.text.toString(),spCurrency.selectedItem.toString(),photoImageUri?.toString()
+        ,lastLocation)
     }
 
     @OnClick(R.id.iv_image)
@@ -93,7 +110,7 @@ class AddItemFragment : BaseFragment(), AddItemView {
         dialog.findViewById<ImageView>(R.id.iv_gallery).setOnClickListener {
             run{
                 dialog.dismiss()
-                getImageFromGallary()
+                getImageFromGallery()
             }
         }
         dialog.show()
@@ -137,7 +154,7 @@ class AddItemFragment : BaseFragment(), AddItemView {
         }
     }
 
-    override fun getImageFromGallary(){
+    override fun getImageFromGallery(){
         val galleryIntent = Intent(Intent.ACTION_PICK,
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         startActivityForResult(galleryIntent, RC_GALLARY_IMAGE)
@@ -170,9 +187,65 @@ class AddItemFragment : BaseFragment(), AddItemView {
 
                         }
                     }
+                    REQUEST_CHECK_SETTINGS-> fetchLocation()
                 }
             }
 
         super.onActivityResult(requestCode, resultCode, data)
     }
+
+    internal var mLocationCallback: LocationCallback = object : LocationCallback() {
+        override fun onLocationResult(locationResult: LocationResult?) {
+            if (locationResult == null) {
+                return
+            }
+            for (location in locationResult.locations) {
+                if (location.accuracy < 200) {
+
+                    lastLocation = location
+                    saveItem()
+                    fusedLocationClient.removeLocationUpdates(this)
+                    break
+                }
+            }
+        }
+    }
+    override fun fetchLocation() {
+        fusedLocationClient.requestLocationUpdates(CommonUtils.getLocationRequest(),
+                mLocationCallback,
+                null)
+    }
+
+    override fun checkLocationSettings() {
+        val client = LocationServices.getSettingsClient(activity!!)
+        val task = client.checkLocationSettings(
+                CommonUtils.getLocationSettingBuilder())
+
+
+        task.addOnSuccessListener {
+            // All location settings are satisfied. The client can initialize
+            // location requests here.
+            // ...
+            fetchLocation()
+        }
+
+        task.addOnFailureListener(activity!!, OnFailureListener { e ->
+            if (e is ResolvableApiException) {
+                // Location settings are not satisfied, but this can be fixed
+                // by showing the user a dialog.
+                try {
+                    // Show the dialog by calling startResolutionForResult(),
+                    // and check the result in onActivityResult().
+                    e.startResolutionForResult(activity,
+                            REQUEST_CHECK_SETTINGS)
+                } catch (sendEx: IntentSender.SendIntentException) {
+                    // Ignore the error.
+                }
+
+            }
+        })
+
+    }
+
+
 }
