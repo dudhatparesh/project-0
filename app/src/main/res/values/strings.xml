@@ -4,4 +4,11 @@
     <string name="item_name">Item Name</string>
     <string name="item_description">Description</string>
     <string name="amount">Amount</string>
+    <string name="currency">Currency</string>
+    <string name="cost">Cost</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="select_image_from">Select Image From</string>
+    <string name="to_create_gif_we_need_this_permission">To perform this action we need permissions.</string>
+    <string name="no_camera_application_found">No camera application found</string>
 </resources>

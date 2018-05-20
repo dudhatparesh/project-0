@@ -46,11 +46,24 @@
                 android:layout_width="match_parent"
                 android:id="@+id/et_amount"
                 android:layout_height="wrap_content"
-                android:hint="@string/amount"
+                android:hint="@string/cost"
 
                 tools:text="5.00" />
         </android.support.design.widget.TextInputLayout>
-
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/currency"/>
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/sp_currency"
+            />
+        <ImageView
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            android:id="@+id/iv_image"
+            android:src="@mipmap/ic_launcher"/>
     </LinearLayout>
     <android.support.design.widget.FloatingActionButton
         android:layout_width="56dp"

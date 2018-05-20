@@ -1,4 +1,4 @@
-package com.birghterbrain.project0
+package com.brighterbrain.project0
 
 import org.junit.Test
 

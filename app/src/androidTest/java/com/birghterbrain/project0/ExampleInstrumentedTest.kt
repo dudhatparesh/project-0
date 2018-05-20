@@ -1,4 +1,4 @@
-package com.birghterbrain.project0
+package com.brighterbrain.project0
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
