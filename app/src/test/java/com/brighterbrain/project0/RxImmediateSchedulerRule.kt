@@ -1,4 +1,4 @@
-package com.birghterbrain.project0
+package com.brighterbrain.project0
 
 import io.reactivex.android.plugins.RxAndroidPlugins
 import io.reactivex.plugins.RxJavaPlugins

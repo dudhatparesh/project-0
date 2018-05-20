@@ -1,4 +1,4 @@
-package com.birghterbrain.project0
+package com.brighterbrain.project0
 
 import com.brighterbrain.project0.data.DataManager
 import com.brighterbrain.project0.data.model.Item
