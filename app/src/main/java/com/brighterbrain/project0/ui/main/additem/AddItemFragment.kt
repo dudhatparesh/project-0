@@ -34,7 +34,7 @@ import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 
 
-class AddItemFragment : BaseFragment(), AddItemView {
+open class AddItemFragment : BaseFragment(), AddItemView {
 
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
