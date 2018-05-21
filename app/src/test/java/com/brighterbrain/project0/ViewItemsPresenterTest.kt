@@ -49,4 +49,13 @@ class ViewItemsPresenterTest {
         verify(viewItemsMvpView).displayItems(data)
     }
 
+
+    @Test
+    fun checkError() {
+        `when`(dataManager.getItems()).thenReturn(Single.error(Exception("Custom Error Message")))
+        viewItemsPresenter.loadItems()
+        verify(viewItemsMvpView).displayError("Custom Error Message")
+    }
+
+
 }

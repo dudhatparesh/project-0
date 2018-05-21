@@ -5,7 +5,8 @@ import org.junit.runners.Suite
 
 @RunWith(Suite::class)
 @Suite.SuiteClasses(
-    MainPresenterTest::class,
-    ViewItemsPresenterTest::class
+        MainPresenterTest::class,
+        ViewItemsPresenterTest::class,
+        AddItemPresenterTest::class
 )
 class TestSuite

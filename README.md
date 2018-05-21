@@ -13,9 +13,9 @@ Project Status
     3) MVP Architecture
     4) Room Database Library
     5) Save Item with Location, External Storage & Camera
-    6) Firebase Store Object  
+    6) Firebase Store Object 
+    7) Unit Tests using Mockito 
 2) WIP
-    1) Unit Tests using Mockito
+    1) Espresso UI Testing
 3) ToDo
     1) Refactoring
-    2) Espresso UI Testing

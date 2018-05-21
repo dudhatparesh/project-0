@@ -27,7 +27,6 @@ class AddItemPresenter @Inject constructor(var dataManager: DataManager): BasePr
             }
 
             override fun onError(e: Throwable) {
-                e.printStackTrace()
                 view?.displayMessage(e.localizedMessage)
             }
         }
