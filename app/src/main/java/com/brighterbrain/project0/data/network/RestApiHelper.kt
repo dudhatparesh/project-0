@@ -31,12 +31,19 @@ class RestApiHelper @Inject constructor() {
         val file = File(filePath)
         val reqFile = RequestBody.create(MediaType.parse("image/*"), file)
         val body = MultipartBody.Part.createFormData("file", file.name, reqFile)
-        return if(item.id==null){webServices.addItem(item.name!!,item.description!!,
-                item.amount!! ,item.currency!! ,item.latitude!! ,
-                item.longitude!! ,body )}else{
+        return if(item.id==null){webServices.addItem(getRequestBody(item.name!!),
+                getRequestBody(item.description!!),
+                getRequestBody(item.amount!!.toString() ),
+                getRequestBody(item.currency!!) ,
+                getRequestBody(item.latitude!!.toString() ),
+                getRequestBody(item.longitude!!.toString() ),body )}else{
             webServices.updateItem(item.name!!,item.description!!,
                     item.amount!! ,item.currency!! ,item.latitude!! ,
                     item.longitude!! , item.id!!,body )
         }
+    }
+
+    private fun getRequestBody(value: String): RequestBody {
+        return RequestBody.create(MediaType.parse("text/plain"), value)
     }
 }

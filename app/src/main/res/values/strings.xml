@@ -11,4 +11,6 @@
     <string name="select_image_from">Select Image From</string>
     <string name="to_create_gif_we_need_this_permission">To perform this action we need permissions.</string>
     <string name="no_camera_application_found">No camera application found</string>
+    <string name="name">Name</string>
+    <string name="price">Price</string>
 </resources>
