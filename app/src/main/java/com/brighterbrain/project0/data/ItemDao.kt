@@ -22,4 +22,7 @@ interface ItemDao {
 
     @Update
     fun update(item: Item)
+
+    @Query("SELECT * FROM item WHERE id = :id")
+    fun getItem(id: Long):Item?
 }

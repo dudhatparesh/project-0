@@ -2,10 +2,10 @@ package com.brighterbrain.project0
 
 import android.app.Activity
 import com.brighterbrain.project0.data.DataManager
-import com.brighterbrain.project0.ui.main.additem.AddItemFragment
-import com.brighterbrain.project0.ui.main.additem.AddItemFragment.Companion.RC_LOCATION
-import com.brighterbrain.project0.ui.main.additem.AddItemPresenter
-import com.brighterbrain.project0.ui.main.additem.AddItemView
+import com.brighterbrain.project0.ui.main.saveitem.SaveItemFragment
+import com.brighterbrain.project0.ui.main.saveitem.SaveItemFragment.Companion.RC_LOCATION
+import com.brighterbrain.project0.ui.main.saveitem.SaveItemPresenter
+import com.brighterbrain.project0.ui.main.saveitem.SaveItemView
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.verify
 import io.reactivex.Completable
@@ -21,7 +21,7 @@ import org.mockito.junit.MockitoJUnit
 import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
-class AddItemPresenterTest {
+class SaveItemPresenterTest {
     @Rule
     @JvmField
     val rule = MockitoJUnit.rule()
@@ -31,36 +31,36 @@ class AddItemPresenterTest {
     val testRule = RxImmediateSchedulerRule()
 
     @Mock
-    lateinit var addItemView: AddItemView
+    lateinit var saveItemView: SaveItemView
 
     @Mock
     lateinit var dataManager: DataManager
 
-    lateinit var addItemPresenter: AddItemPresenter
+    lateinit var saveItemPresenter: SaveItemPresenter
 
     @Before
     fun setup(){
         MockitoAnnotations.initMocks(this)
-        addItemPresenter = AddItemPresenter(dataManager)
-        addItemPresenter.attachView(addItemView)
+        saveItemPresenter = SaveItemPresenter(dataManager)
+        saveItemPresenter.attachView(saveItemView)
     }
 
     @Test
     fun testAddItemSuccess(){
-        `when`(dataManager.saveItem(any())).thenReturn(Completable.complete())
-        addItemPresenter.addItem("","","5.0","INR","",
+        `when`(dataManager.saveItem(any(),"")).thenReturn(Completable.complete())
+        saveItemPresenter.addItem("","","5.0","INR","",
                 null)
-        verify(addItemView).displayMessage("Item Added")
-        verify(addItemView).popBack()
+        verify(saveItemView).displayMessage("Item Added")
+        verify(saveItemView).popBack()
     }
 
 
     @Test
     fun testAddItemError(){
-        `when`(dataManager.saveItem(any())).thenReturn(Completable.error(Error("Custom Error Message")))
-        addItemPresenter.addItem("","","5.0","INR","",
+        `when`(dataManager.saveItem(any(),"")).thenReturn(Completable.error(Error("Custom Error Message")))
+        saveItemPresenter.addItem("","","5.0","INR","",
                 null)
-        verify(addItemView).displayMessage("Custom Error Message")
+        verify(saveItemView).displayMessage("Custom Error Message")
     }
 
     @Test
@@ -68,8 +68,8 @@ class AddItemPresenterTest {
         val perms= arrayOf<String>()
         val activity= Mockito.mock(Activity::class.java)
         `when`(dataManager.hasPermissions(perms)).thenReturn(true)
-        addItemPresenter.checkPermissions(activity,AddItemFragment.RC_CAMERA,perms)
-        verify(addItemView).captureImage()
+        saveItemPresenter.checkPermissions(activity,SaveItemFragment.RC_CAMERA,perms)
+        verify(saveItemView).captureImage()
     }
 
 
@@ -78,8 +78,8 @@ class AddItemPresenterTest {
         val perms= arrayOf<String>()
         val activity= Mockito.mock(Activity::class.java)
         `when`(dataManager.hasPermissions(perms)).thenReturn(true)
-        addItemPresenter.checkPermissions(activity,AddItemFragment.RC_LOCATION,perms)
-        verify(addItemView).checkLocationSettings()
+        saveItemPresenter.checkPermissions(activity,SaveItemFragment.RC_LOCATION,perms)
+        verify(saveItemView).checkLocationSettings()
     }
 
 
@@ -89,8 +89,8 @@ class AddItemPresenterTest {
         val activity= Mockito.mock(Activity::class.java)
         `when`(dataManager.hasPermissions(perms)).thenReturn(false)
         `when`(dataManager.shouldAskPermission(perms,activity)).thenReturn(true)
-        addItemPresenter.checkPermissions(activity,AddItemFragment.RC_LOCATION,perms)
-        verify(addItemView).requestPermission(activity.getString(R.string.to_create_gif_we_need_this_permission),
+        saveItemPresenter.checkPermissions(activity,SaveItemFragment.RC_LOCATION,perms)
+        verify(saveItemView).requestPermission(activity.getString(R.string.to_create_gif_we_need_this_permission),
                 RC_LOCATION,perms)
     }
 
@@ -101,7 +101,7 @@ class AddItemPresenterTest {
         val activity= Mockito.mock(Activity::class.java)
         `when`(dataManager.hasPermissions(perms)).thenReturn(false)
         `when`(dataManager.shouldAskPermission(perms,activity)).thenReturn(false)
-        addItemPresenter.checkPermissions(activity,AddItemFragment.RC_LOCATION,perms)
-        verify(addItemView).displayPermissionAlertDialog()
+        saveItemPresenter.checkPermissions(activity,SaveItemFragment.RC_LOCATION,perms)
+        verify(saveItemView).displayPermissionAlertDialog()
     }
 }

@@ -27,9 +27,9 @@ open class DataManager @Inject constructor(@ApplicationContext private var appCo
                     val response = restApiHelper.saveItem(item, filePath).execute()
                     if (response.isSuccessful) {
                         if (response.body()!!.status == 200) {
-                            if(item.id==null) {
+                            if (item.id == null) {
                                 databaseHelper.addItem(response.body()!!.item!!)
-                            }else{
+                            } else {
                                 databaseHelper.updateItem(response.body()!!.item!!)
                             }
                             s?.onComplete()
@@ -43,6 +43,29 @@ open class DataManager @Inject constructor(@ApplicationContext private var appCo
                     s?.onError(e)
                 }
             }
+        }
+    }
+
+    fun deleteItem(item: Item): Completable {
+        return object : Completable() {
+            override fun subscribeActual(s: CompletableObserver?) {
+                try {
+                    val response = restApiHelper.deleteItem(item.id!!).execute()
+                    if (response.isSuccessful) {
+                        if (response.body()!!.status == 200) {
+                            databaseHelper.deleteItem(item)
+                            s?.onComplete()
+                        } else {
+                            s?.onError(RuntimeException(response.body()!!.message))
+                        }
+                    } else {
+                        s?.onError(RuntimeException(response.errorBody()!!.string()))
+                    }
+                } catch (e: Exception) {
+                    s?.onError(e)
+                }
+            }
+
         }
     }
 
@@ -82,5 +105,25 @@ open class DataManager @Inject constructor(@ApplicationContext private var appCo
         perms.forEach {
             prefHelper.set(it, value.toString())
         }
+    }
+
+    fun getItem(id:Long): Single<Item> {
+        return object : Single<Item>() {
+            override fun subscribeActual(observer: SingleObserver<in Item>) {
+                try {
+                    val item = databaseHelper.getItem(id)
+                    if(item != null){
+                        observer.onSuccess(item)
+                    }else{
+                        observer.onError(RuntimeException("No Item Found"))
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    observer.onError(e)
+                }
+            }
+
+        }
+
     }
 }

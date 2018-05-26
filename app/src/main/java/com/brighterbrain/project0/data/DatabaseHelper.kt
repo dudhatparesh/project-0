@@ -37,4 +37,12 @@ class DatabaseHelper @Inject constructor(@ApplicationContext context: Context) {
         appDatabase.itemDao().update(item)
     }
 
+    fun deleteItem(item: Item) {
+        appDatabase.itemDao().deleteItem(item)
+    }
+
+    fun getItem(id: Long): Item? {
+        return appDatabase.itemDao().getItem(id)
+    }
+
 }

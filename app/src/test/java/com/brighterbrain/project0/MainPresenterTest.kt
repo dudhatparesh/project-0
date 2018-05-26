@@ -1,18 +1,15 @@
 package com.brighterbrain.project0
 
-import android.support.v4.app.Fragment
 import com.brighterbrain.project0.ui.main.MainActivity
 import com.brighterbrain.project0.ui.main.MainMvpView
 import com.brighterbrain.project0.ui.main.MainPresenter
-import com.brighterbrain.project0.ui.main.additem.AddItemFragment
+import com.brighterbrain.project0.ui.main.saveitem.SaveItemFragment
 import com.brighterbrain.project0.ui.main.viewitems.ViewItemsFragment
 import com.nhaarman.mockito_kotlin.any
-import com.nhaarman.mockito_kotlin.argThat
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentMatcher
 import org.mockito.Mock
 import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
@@ -41,7 +38,7 @@ class MainPresenterTest {
     @Test
     fun checkDisplayFragmentAddItem() {
         mainPresenter.displayFragment(MainActivity.FRAGMENT_ADD_ITEM, true)
-        verify(mainMvpView).displayFragment(any<AddItemFragment>(), any())
+        verify(mainMvpView).displayFragment(any<SaveItemFragment>(), any())
     }
 
 

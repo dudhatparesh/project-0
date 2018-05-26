@@ -10,7 +10,8 @@ import com.brighterbrain.project0.data.model.Item
 import com.brighterbrain.project0.utils.CommonUtils
 import com.bumptech.glide.Glide
 
-class ItemAdapter constructor(var items: List<Item>, var context: Context?)
+class ItemAdapter constructor(var items: List<Item>, var context: Context?,
+                              var itemClickListener: ItemClickListener)
     : RecyclerView.Adapter<ItemViewHolder>() {
 
 
@@ -31,6 +32,7 @@ class ItemAdapter constructor(var items: List<Item>, var context: Context?)
                 .append(" ")
                 .append(item.currency)
                 .toString()
+        holder.itemView.setOnClickListener { itemClickListener.onItemClick(items[holder.adapterPosition]) }
     }
 
 }

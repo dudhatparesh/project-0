@@ -1,4 +1,4 @@
-package com.brighterbrain.project0.ui.main.additem
+package com.brighterbrain.project0.ui.main.saveitem
 
 import android.Manifest
 import android.app.Activity
@@ -19,11 +19,13 @@ import butterknife.ButterKnife
 import butterknife.OnClick
 import com.brighterbrain.project0.MainApplication
 import com.brighterbrain.project0.R
+import com.brighterbrain.project0.data.model.Item
 import com.brighterbrain.project0.ui.base.BaseFragment
 import com.brighterbrain.project0.utils.CommonUtils
 import com.brighterbrain.project0.utils.FileUtils
 import com.bumptech.glide.Glide
 import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.common.internal.service.Common
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationResult
@@ -36,7 +38,7 @@ import java.io.IOException
 import javax.inject.Inject
 
 
-open class AddItemFragment : BaseFragment(), AddItemView {
+open class SaveItemFragment : BaseFragment(), SaveItemView {
 
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -68,22 +70,40 @@ open class AddItemFragment : BaseFragment(), AddItemView {
     lateinit var spCurrency: Spinner
 
     @Inject
-    lateinit var addItemPresenter: AddItemPresenter
+    lateinit var saveItemPresenter: SaveItemPresenter
 
-    var imageUri: Uri? = null
-    var imagePath: String? = null
+    private var imageUri: Uri? = null
+    private var imagePath: String? = null
+    private var itemId: Long? = null
+
+    private val currencies = arrayOf("USD", "INR", "GBP")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_add_item, container, false)
             ButterKnife.bind(this, rootView!!)
             getComponent().inject(this)
-            addItemPresenter.attachView(this)
+            saveItemPresenter.attachView(this)
 
             spCurrency.adapter = ArrayAdapter<String>(context,
-                    android.R.layout.simple_expandable_list_item_1, arrayOf("USD", "INR", "GBP"))
+                    android.R.layout.simple_expandable_list_item_1, currencies)
+            itemId = arguments?.getLong("id", -1L)
+            if(itemId!=null &&itemId!=-1L) {
+                saveItemPresenter.fillData(itemId!!)
+            }
         }
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity!!)
         return rootView!!
+    }
+
+
+    override fun fillData(item: Item) {
+        etName.setText(item.name)
+        etDesc.setText(item.description)
+        etAmount.setText(item.amount.toString())
+        spCurrency.setSelection(currencies.indexOf(item.currency))
+        Glide.with(context!!).load(CommonUtils._IMAGE_URLS+item.imageName)
+                .into(ivImage)
+
     }
 
 
@@ -95,15 +115,16 @@ open class AddItemFragment : BaseFragment(), AddItemView {
     @AfterPermissionGranted(RC_LOCATION)
     fun checkLocation() {
 
-        addItemPresenter.checkPermissions(activity!!, RC_LOCATION, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION))
+        saveItemPresenter.checkPermissions(activity!!, RC_LOCATION, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION))
 
 
     }
+
     @AfterPermissionGranted(RC_READ_SD_CARD)
     override fun saveItem() {
-        addItemPresenter.addItem(etName.text.toString(), etDesc.text.toString(),
+        saveItemPresenter.addItem(etName.text.toString(), etDesc.text.toString(),
                 etAmount.text.toString(), spCurrency.selectedItem.toString(),
-                imagePath!! , lastLocation)
+                imagePath!!, lastLocation,itemId)
     }
 
     @OnClick(R.id.iv_image)
@@ -126,9 +147,9 @@ open class AddItemFragment : BaseFragment(), AddItemView {
     }
 
 
-    @AfterPermissionGranted(AddItemFragment.RC_CAMERA)
+    @AfterPermissionGranted(SaveItemFragment.RC_CAMERA)
     private fun checkCameraPermission() {
-        addItemPresenter.checkPermissions(activity!!, RC_CAMERA, arrayOf(Manifest.permission.CAMERA))
+        saveItemPresenter.checkPermissions(activity!!, RC_CAMERA, arrayOf(Manifest.permission.CAMERA))
     }
 
 
@@ -178,7 +199,7 @@ open class AddItemFragment : BaseFragment(), AddItemView {
 
 
     override fun popBack() {
-        activity!!.supportFragmentManager.popBackStack()
+        activity?.supportFragmentManager?.popBackStack()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -212,7 +233,7 @@ open class AddItemFragment : BaseFragment(), AddItemView {
                 if (location.accuracy < 200) {
 
                     lastLocation = location
-                    addItemPresenter.checkPermissions(activity = activity!!,requestCode = RC_READ_SD_CARD,
+                    saveItemPresenter.checkPermissions(activity = activity!!, requestCode = RC_READ_SD_CARD,
                             perms = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE))
                     fusedLocationClient.removeLocationUpdates(this)
                     break

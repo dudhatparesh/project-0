@@ -7,6 +7,6 @@ import org.junit.runners.Suite
 @Suite.SuiteClasses(
         MainPresenterTest::class,
         ViewItemsPresenterTest::class,
-        AddItemPresenterTest::class
+        SaveItemPresenterTest::class
 )
 class TestSuite

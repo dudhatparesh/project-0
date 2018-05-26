@@ -26,7 +26,8 @@ interface WebServices {
                 @Part("longitude") longitude: RequestBody,
                 @Part imageFile: MultipartBody.Part): Call<SaveItemResponse>
 
-    @POST("/items/update")
+    @POST("/item/update")
+    @Multipart
     fun updateItem(@Part("name") name: RequestBody,
                    @Part("description") description: RequestBody,
                    @Part("amount") amount: RequestBody,
@@ -36,6 +37,6 @@ interface WebServices {
                    @Part("id") id: RequestBody,
                    @Part imageFile: MultipartBody.Part): Call<SaveItemResponse>
 
-    @POST("/items/delete")
-    fun deleteItem(): Call<BaseResponse>
+    @POST("/item/delete")
+    fun deleteItem(id:Long): Call<BaseResponse>
 }
