@@ -24,11 +24,9 @@ open class DataManager @Inject constructor(@ApplicationContext private var appCo
         return object:Completable(){
             override fun subscribeActual(s: CompletableObserver?) {
                 try {
-                    val id = databaseHelper.appDatabase.itemDao().insert(item)
-                    firebaseHelper.firebaseDatabase.getReference("project-0")
-                            .child("items")
-                            .child(id.toString())
-                            .setValue(item)
+                    val id = databaseHelper.saveItem(item)
+                    item.id=id
+                    firebaseHelper.saveItem(item)
                     s?.onComplete()
                 }catch (e: Exception){
                     s?.onError(e)
@@ -40,7 +38,7 @@ open class DataManager @Inject constructor(@ApplicationContext private var appCo
         return object :Single<List<Item>>(){
             override fun subscribeActual(observer: SingleObserver<in List<Item>>) {
                 try{
-                    observer.onSuccess(databaseHelper.appDatabase.itemDao().getAllItems())
+                    observer.onSuccess(databaseHelper.getAllItems())
                 }catch (e:Exception){
                     observer.onError(e)
                 }

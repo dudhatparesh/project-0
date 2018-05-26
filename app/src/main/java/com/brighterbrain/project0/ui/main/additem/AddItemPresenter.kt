@@ -32,7 +32,7 @@ class AddItemPresenter @Inject constructor(var dataManager: DataManager): BasePr
         }
         dataManager.addItem(Item(name = itemName,description = itemDesc,amount = amount.toDouble(),
                 imagePath = photoUri,
-                lattitude = lastLocation?.latitude,
+                latitude = lastLocation?.latitude,
                 longitude = lastLocation?.longitude,
                 currency = currency))
                 .subscribeOn(Schedulers.io())
