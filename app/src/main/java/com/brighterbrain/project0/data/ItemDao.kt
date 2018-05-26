@@ -11,8 +11,8 @@ interface ItemDao {
     @Insert
     fun insertAll(items: List<Item>)
 
-    @Delete
-    fun deleteItem(item: Item)
+    @Query("DELETE FROM item WHERE id=:id")
+    fun deleteItem(id: Long)
 
     @Insert
     fun insert(item: Item): Long

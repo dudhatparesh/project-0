@@ -46,14 +46,14 @@ open class DataManager @Inject constructor(@ApplicationContext private var appCo
         }
     }
 
-    fun deleteItem(item: Item): Completable {
+    fun deleteItem(id: Long): Completable {
         return object : Completable() {
             override fun subscribeActual(s: CompletableObserver?) {
                 try {
-                    val response = restApiHelper.deleteItem(item.id!!).execute()
+                    val response = restApiHelper.deleteItem(id).execute()
                     if (response.isSuccessful) {
                         if (response.body()!!.status == 200) {
-                            databaseHelper.deleteItem(item)
+                            databaseHelper.deleteItem(id)
                             s?.onComplete()
                         } else {
                             s?.onError(RuntimeException(response.body()!!.message))

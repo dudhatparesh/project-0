@@ -9,6 +9,7 @@ import android.location.Location
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.support.design.widget.FloatingActionButton
 import android.support.v4.content.FileProvider
 import android.view.LayoutInflater
 import android.view.View
@@ -57,6 +58,9 @@ open class SaveItemFragment : BaseFragment(), SaveItemView {
     @BindView(R.id.et_name)
     lateinit var etName: EditText
 
+    @BindView(R.id.fab_delete)
+    lateinit var fabDelete: FloatingActionButton
+
     @BindView(R.id.et_desc)
     lateinit var etDesc: EditText
 
@@ -103,6 +107,7 @@ open class SaveItemFragment : BaseFragment(), SaveItemView {
         spCurrency.setSelection(currencies.indexOf(item.currency))
         Glide.with(context!!).load(CommonUtils._IMAGE_URLS+item.imageName)
                 .into(ivImage)
+        fabDelete.visibility = View.VISIBLE
 
     }
 
@@ -125,6 +130,11 @@ open class SaveItemFragment : BaseFragment(), SaveItemView {
         saveItemPresenter.addItem(etName.text.toString(), etDesc.text.toString(),
                 etAmount.text.toString(), spCurrency.selectedItem.toString(),
                 imagePath!!, lastLocation,itemId)
+    }
+
+    @OnClick(R.id.fab_delete)
+    fun deleteItem(){
+        saveItemPresenter.deleteItem(itemId!!)
     }
 
     @OnClick(R.id.iv_image)

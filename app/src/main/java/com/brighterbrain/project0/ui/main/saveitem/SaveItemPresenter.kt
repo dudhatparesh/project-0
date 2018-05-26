@@ -8,6 +8,7 @@ import com.brighterbrain.project0.R
 import com.brighterbrain.project0.data.DataManager
 import com.brighterbrain.project0.data.model.Item
 import com.brighterbrain.project0.ui.base.BasePresenter
+import io.reactivex.Completable
 import io.reactivex.CompletableObserver
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -89,6 +90,28 @@ class SaveItemPresenter @Inject constructor(var dataManager: DataManager) : Base
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(getItemObserver)
+    }
+
+    fun deleteItem(id:Long){
+        val deleteItemObserver: CompletableObserver = object : CompletableObserver{
+            override fun onComplete() {
+                view?.displayMessage("Item removed")
+                view?.popBack()
+            }
+
+            override fun onSubscribe(d: Disposable) {
+                compositeDisposable.add(d)
+            }
+
+            override fun onError(e: Throwable) {
+                view?.displayMessage(e.localizedMessage)
+            }
+
+        }
+        dataManager.deleteItem(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(deleteItemObserver)
     }
 
 

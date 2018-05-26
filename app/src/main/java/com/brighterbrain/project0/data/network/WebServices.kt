@@ -7,10 +7,7 @@ import com.brighterbrain.project0.data.network.response.UpdateItemResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
-import retrofit2.http.GET
-import retrofit2.http.Multipart
-import retrofit2.http.POST
-import retrofit2.http.Part
+import retrofit2.http.*
 
 interface WebServices {
     @GET("/items")
@@ -38,5 +35,6 @@ interface WebServices {
                    @Part imageFile: MultipartBody.Part): Call<SaveItemResponse>
 
     @POST("/item/delete")
-    fun deleteItem(id:Long): Call<BaseResponse>
+    @FormUrlEncoded
+    fun deleteItem(@Field("id") id:Long): Call<BaseResponse>
 }
