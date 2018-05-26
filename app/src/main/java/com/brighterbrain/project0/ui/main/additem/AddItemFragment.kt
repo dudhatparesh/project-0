@@ -45,8 +45,9 @@ open class AddItemFragment : BaseFragment(), AddItemView {
         const val RC_CAMERA: Int = 101
         const val RC_LOCATION: Int = 102
         const val RC_CAPTURE_IMAGE = 1001
-        const val RC_GALLARY_IMAGE = 1002
+        const val RC_GALLERY_IMAGE = 1002
         const val REQUEST_CHECK_SETTINGS = 1003
+        const val RC_READ_SD_CARD = 103
     }
 
     private var rootView: View? = null
@@ -98,8 +99,8 @@ open class AddItemFragment : BaseFragment(), AddItemView {
 
 
     }
-
-    fun saveItem() {
+    @AfterPermissionGranted(RC_READ_SD_CARD)
+    override fun saveItem() {
         addItemPresenter.addItem(etName.text.toString(), etDesc.text.toString(),
                 etAmount.text.toString(), spCurrency.selectedItem.toString(),
                 imagePath!! , lastLocation)
@@ -164,7 +165,7 @@ open class AddItemFragment : BaseFragment(), AddItemView {
     override fun getImageFromGallery() {
         val galleryIntent = Intent(Intent.ACTION_PICK,
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        startActivityForResult(galleryIntent, RC_GALLARY_IMAGE)
+        startActivityForResult(galleryIntent, RC_GALLERY_IMAGE)
     }
 
     override fun requestPermission(rationaleText: String?, requestCode: Int, perms: Array<String>) {
@@ -187,7 +188,7 @@ open class AddItemFragment : BaseFragment(), AddItemView {
                 RC_CAPTURE_IMAGE -> {
                     Glide.with(this).load(imageUri).into(ivImage)
                 }
-                RC_GALLARY_IMAGE -> {
+                RC_GALLERY_IMAGE -> {
                     if (data != null) {
                         imageUri = data.data
                         imagePath = FileUtils.getRealPathFromURI(context!!, imageUri!!)
@@ -211,7 +212,8 @@ open class AddItemFragment : BaseFragment(), AddItemView {
                 if (location.accuracy < 200) {
 
                     lastLocation = location
-                    saveItem()
+                    addItemPresenter.checkPermissions(activity = activity!!,requestCode = RC_READ_SD_CARD,
+                            perms = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE))
                     fusedLocationClient.removeLocationUpdates(this)
                     break
                 }

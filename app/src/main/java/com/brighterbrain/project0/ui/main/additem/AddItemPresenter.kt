@@ -47,6 +47,7 @@ class AddItemPresenter @Inject constructor(var dataManager: DataManager): BasePr
                 when(requestCode){
                     AddItemFragment.RC_CAMERA -> view?.captureImage()
                     AddItemFragment.RC_LOCATION -> view?.checkLocationSettings()
+                    AddItemFragment.RC_READ_SD_CARD -> view?.saveItem()
                 }
             } else {
 

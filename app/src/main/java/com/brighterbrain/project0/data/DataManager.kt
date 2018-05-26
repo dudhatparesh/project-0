@@ -19,7 +19,6 @@ import javax.inject.Singleton
 open class DataManager @Inject constructor(@ApplicationContext private var appContext: Context,
                                            private var databaseHelper: DatabaseHelper,
                                            private var prefHelper: PrefHelper,
-                                           private var firebaseHelper: FirebaseHelper,
                                            private var restApiHelper: RestApiHelper) {
     fun addItem(item: Item, filePath: String): Completable {
         return object : Completable() {

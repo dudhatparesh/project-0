@@ -11,4 +11,5 @@ interface AddItemView: MvpView{
     fun getImageFromGallery()
     fun fetchLocation()
     fun checkLocationSettings()
+    fun saveItem()
 }
