@@ -5,6 +5,9 @@ import com.google.android.gms.location.LocationSettingsRequest
 
 class CommonUtils {
     companion object {
+        const val _BASE_URL="http://173.255.210.56:8080"
+        const val _IMAGE_URLS= "$_BASE_URL/images/"
+
         fun getLocationRequest(): LocationRequest {
             val mLocationRequest = LocationRequest()
             mLocationRequest.interval = 10000

@@ -31,7 +31,7 @@ class AddItemPresenter @Inject constructor(var dataManager: DataManager): BasePr
             }
         }
         dataManager.addItem(Item(name = itemName,description = itemDesc,amount = amount.toDouble(),
-                imagePath = photoUri,
+                imageName = photoUri,
                 latitude = lastLocation?.latitude,
                 longitude = lastLocation?.longitude,
                 currency = currency))

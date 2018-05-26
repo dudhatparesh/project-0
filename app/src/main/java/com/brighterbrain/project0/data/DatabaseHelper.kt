@@ -14,6 +14,9 @@ class DatabaseHelper @Inject constructor(@ApplicationContext context: Context) {
         return appDatabase.itemDao().insert(item)
     }
 
+    fun saveItems(items: List<Item>){
+        appDatabase.itemDao().insertAll(items)
+    }
     fun getAllItems(): List<Item> {
         return appDatabase.itemDao().getAllItems()
     }

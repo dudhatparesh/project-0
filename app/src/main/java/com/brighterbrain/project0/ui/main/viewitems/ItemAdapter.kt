@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.brighterbrain.project0.R
 import com.brighterbrain.project0.data.model.Item
+import com.brighterbrain.project0.utils.CommonUtils
 import com.bumptech.glide.Glide
 
 class ItemAdapter constructor(var items:List<Item>, var context: Context?)
@@ -24,7 +25,7 @@ class ItemAdapter constructor(var items:List<Item>, var context: Context?)
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val item = items[position]
         holder.tvName.text = item.name
-        Glide.with(context!!).load(Uri.parse(item.imagePath)).into(holder.ivImage)
+        Glide.with(context!!).load(Uri.parse(CommonUtils._IMAGE_URLS+item.imageName)).into(holder.ivImage)
         holder.tvDesc.text = item.description
         holder.tvAmount.text = StringBuilder().append(item.amount.toString())
                 .append(" ")

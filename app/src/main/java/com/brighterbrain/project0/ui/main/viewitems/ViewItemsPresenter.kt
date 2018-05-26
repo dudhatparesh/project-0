@@ -2,6 +2,7 @@ package com.brighterbrain.project0.ui.main.viewitems
 
 import com.brighterbrain.project0.data.DataManager
 import com.brighterbrain.project0.data.model.Item
+import com.brighterbrain.project0.data.network.response.GetItems
 import com.brighterbrain.project0.ui.base.BasePresenter
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
