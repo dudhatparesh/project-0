@@ -1,9 +1,7 @@
 package com.brighterbrain.project0
 
 import android.app.Activity
-import android.location.Location
 import com.brighterbrain.project0.data.DataManager
-import com.brighterbrain.project0.ui.main.MainActivity
 import com.brighterbrain.project0.ui.main.additem.AddItemFragment
 import com.brighterbrain.project0.ui.main.additem.AddItemFragment.Companion.RC_LOCATION
 import com.brighterbrain.project0.ui.main.additem.AddItemPresenter
@@ -49,7 +47,7 @@ class AddItemPresenterTest {
 
     @Test
     fun testAddItemSuccess(){
-        `when`(dataManager.addItem(any())).thenReturn(Completable.complete())
+        `when`(dataManager.saveItem(any())).thenReturn(Completable.complete())
         addItemPresenter.addItem("","","5.0","INR","",
                 null)
         verify(addItemView).displayMessage("Item Added")
@@ -59,7 +57,7 @@ class AddItemPresenterTest {
 
     @Test
     fun testAddItemError(){
-        `when`(dataManager.addItem(any())).thenReturn(Completable.error(Error("Custom Error Message")))
+        `when`(dataManager.saveItem(any())).thenReturn(Completable.error(Error("Custom Error Message")))
         addItemPresenter.addItem("","","5.0","INR","",
                 null)
         verify(addItemView).displayMessage("Custom Error Message")

@@ -1,7 +1,7 @@
 package com.brighterbrain.project0.data.network
 
 import com.brighterbrain.project0.data.model.Item
-import com.brighterbrain.project0.data.network.response.AddItemResponse
+import com.brighterbrain.project0.data.network.response.SaveItemResponse
 import com.brighterbrain.project0.data.network.response.GetItems
 import com.brighterbrain.project0.utils.CommonUtils
 import com.google.gson.GsonBuilder
@@ -27,12 +27,16 @@ class RestApiHelper @Inject constructor() {
     fun getItems(): Call<GetItems> {
         return webServices.getItems()
     }
-    fun addItem(item: Item, filePath:String): Call<AddItemResponse>{
+    fun saveItem(item: Item, filePath:String): Call<SaveItemResponse>{
         val file = File(filePath)
         val reqFile = RequestBody.create(MediaType.parse("image/*"), file)
         val body = MultipartBody.Part.createFormData("file", file.name, reqFile)
-        return webServices.addItem(item.name!!,item.description!!,
+        return if(item.id==null){webServices.addItem(item.name!!,item.description!!,
                 item.amount!! ,item.currency!! ,item.latitude!! ,
-                item.longitude!! ,body )
+                item.longitude!! ,body )}else{
+            webServices.updateItem(item.name!!,item.description!!,
+                    item.amount!! ,item.currency!! ,item.latitude!! ,
+                    item.longitude!! , item.id!!,body )
+        }
     }
 }

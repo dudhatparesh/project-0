@@ -10,7 +10,7 @@ import javax.inject.Singleton
 class DatabaseHelper @Inject constructor(@ApplicationContext context: Context) {
     private var appDatabase: AppDatabase = AppDatabase.getInstance(context)!!
 
-    fun saveItem(item: Item): Long {
+    fun addItem(item: Item): Long {
         return appDatabase.itemDao().insert(item)
     }
 
@@ -31,6 +31,10 @@ class DatabaseHelper @Inject constructor(@ApplicationContext context: Context) {
             deleteAll()
             saveItems(items)
         }
+    }
+
+    fun updateItem(item: Item) {
+        appDatabase.itemDao().update(item)
     }
 
 }

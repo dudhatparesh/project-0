@@ -6,7 +6,6 @@ import com.brighterbrain.project0.R
 import com.brighterbrain.project0.data.DataManager
 import com.brighterbrain.project0.data.model.Item
 import com.brighterbrain.project0.ui.base.BasePresenter
-import com.brighterbrain.project0.utils.FileUtils
 import io.reactivex.CompletableObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -32,7 +31,7 @@ class AddItemPresenter @Inject constructor(var dataManager: DataManager): BasePr
             }
         }
 
-        dataManager.addItem(Item(name = itemName,description = itemDesc,amount = amount.toDouble(),
+        dataManager.saveItem(Item(name = itemName,description = itemDesc,amount = amount.toDouble(),
                 latitude = lastLocation?.latitude,
                 longitude = lastLocation?.longitude,
                 currency = currency),photoPath)

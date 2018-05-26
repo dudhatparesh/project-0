@@ -4,7 +4,7 @@ import com.brighterbrain.project0.data.model.Item
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-class AddItemResponse : BaseResponse() {
+class SaveItemResponse : BaseResponse() {
     @SerializedName("data")
     @Expose
     val item: Item? = null

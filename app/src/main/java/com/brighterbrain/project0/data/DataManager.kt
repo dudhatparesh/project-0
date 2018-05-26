@@ -20,14 +20,18 @@ open class DataManager @Inject constructor(@ApplicationContext private var appCo
                                            private var databaseHelper: DatabaseHelper,
                                            private var prefHelper: PrefHelper,
                                            private var restApiHelper: RestApiHelper) {
-    fun addItem(item: Item, filePath: String): Completable {
+    fun saveItem(item: Item, filePath: String): Completable {
         return object : Completable() {
             override fun subscribeActual(s: CompletableObserver?) {
                 try {
-                    val response = restApiHelper.addItem(item, filePath).execute()
+                    val response = restApiHelper.saveItem(item, filePath).execute()
                     if (response.isSuccessful) {
                         if (response.body()!!.status == 200) {
-                            databaseHelper.saveItem(response.body()!!.item!!)
+                            if(item.id==null) {
+                                databaseHelper.addItem(response.body()!!.item!!)
+                            }else{
+                                databaseHelper.updateItem(response.body()!!.item!!)
+                            }
                             s?.onComplete()
                         } else {
                             s?.onError(RuntimeException(response.body()!!.message))

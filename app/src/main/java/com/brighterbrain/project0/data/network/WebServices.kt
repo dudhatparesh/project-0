@@ -1,6 +1,6 @@
 package com.brighterbrain.project0.data.network
 
-import com.brighterbrain.project0.data.network.response.AddItemResponse
+import com.brighterbrain.project0.data.network.response.SaveItemResponse
 import com.brighterbrain.project0.data.network.response.BaseResponse
 import com.brighterbrain.project0.data.network.response.GetItems
 import com.brighterbrain.project0.data.network.response.UpdateItemResponse
@@ -23,10 +23,17 @@ interface WebServices {
                 @Part("currency") currency: String,
                 @Part("latitude") latitude: Double,
                 @Part("longitude") longitude: Double,
-                @Part imageFile: MultipartBody.Part): Call<AddItemResponse>
+                @Part imageFile: MultipartBody.Part): Call<SaveItemResponse>
 
     @POST("/items/update")
-    fun updateItem(): Call<UpdateItemResponse>
+    fun updateItem(@Part("name") name: String,
+                   @Part("description") description: String,
+                   @Part("amount") amount: Double,
+                   @Part("currency") currency: String,
+                   @Part("latitude") latitude: Double,
+                   @Part("longitude") longitude: Double,
+                   @Part("id") id: Long,
+                   @Part imageFile: MultipartBody.Part): Call<SaveItemResponse>
 
     @POST("/items/delete")
     fun deleteItem(): Call<BaseResponse>
