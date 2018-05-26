@@ -27,13 +27,13 @@ interface WebServices {
                 @Part imageFile: MultipartBody.Part): Call<SaveItemResponse>
 
     @POST("/items/update")
-    fun updateItem(@Part("name") name: String,
-                   @Part("description") description: String,
-                   @Part("amount") amount: Double,
-                   @Part("currency") currency: String,
-                   @Part("latitude") latitude: Double,
-                   @Part("longitude") longitude: Double,
-                   @Part("id") id: Long,
+    fun updateItem(@Part("name") name: RequestBody,
+                   @Part("description") description: RequestBody,
+                   @Part("amount") amount: RequestBody,
+                   @Part("currency") currency: RequestBody,
+                   @Part("latitude") latitude: RequestBody,
+                   @Part("longitude") longitude: RequestBody,
+                   @Part("id") id: RequestBody,
                    @Part imageFile: MultipartBody.Part): Call<SaveItemResponse>
 
     @POST("/items/delete")

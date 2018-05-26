@@ -37,9 +37,13 @@ class RestApiHelper @Inject constructor() {
                 getRequestBody(item.currency!!) ,
                 getRequestBody(item.latitude!!.toString() ),
                 getRequestBody(item.longitude!!.toString() ),body )}else{
-            webServices.updateItem(item.name!!,item.description!!,
-                    item.amount!! ,item.currency!! ,item.latitude!! ,
-                    item.longitude!! , item.id!!,body )
+            webServices.updateItem(getRequestBody(item.name!!),
+                    getRequestBody(item.description!!),
+                    getRequestBody(item.amount!!.toString() ),
+                    getRequestBody(item.currency!!) ,
+                    getRequestBody(item.latitude!!.toString() ),
+                    getRequestBody(item.longitude!!.toString() ),
+                    getRequestBody(item.id!!.toString() ),body )
         }
     }
 
