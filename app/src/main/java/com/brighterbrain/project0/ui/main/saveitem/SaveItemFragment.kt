@@ -26,7 +26,6 @@ import com.brighterbrain.project0.utils.CommonUtils
 import com.brighterbrain.project0.utils.FileUtils
 import com.bumptech.glide.Glide
 import com.google.android.gms.common.api.ResolvableApiException
-import com.google.android.gms.common.internal.service.Common
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationResult
@@ -61,6 +60,9 @@ open class SaveItemFragment : BaseFragment(), SaveItemView {
     @BindView(R.id.fab_delete)
     lateinit var fabDelete: FloatingActionButton
 
+    @BindView(R.id.fab_dir)
+    lateinit var fabDirection: FloatingActionButton
+
     @BindView(R.id.et_desc)
     lateinit var etDesc: EditText
 
@@ -79,11 +81,13 @@ open class SaveItemFragment : BaseFragment(), SaveItemView {
     private var imageUri: Uri? = null
     private var imagePath: String? = null
     private var itemId: Long? = null
+    private var latitude : Double? = null
+    private var longitude: Double? = null
 
     private val currencies = arrayOf("USD", "INR", "GBP")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         if (rootView == null) {
-            rootView = inflater.inflate(R.layout.fragment_add_item, container, false)
+            rootView = inflater.inflate(R.layout.fragment_save_item, container, false)
             ButterKnife.bind(this, rootView!!)
             getComponent().inject(this)
             saveItemPresenter.attachView(this)
@@ -108,6 +112,9 @@ open class SaveItemFragment : BaseFragment(), SaveItemView {
         Glide.with(context!!).load(CommonUtils._IMAGE_URLS+item.imageName)
                 .into(ivImage)
         fabDelete.visibility = View.VISIBLE
+        fabDirection.visibility = View.VISIBLE
+        latitude = item.latitude
+        longitude = item.longitude
 
     }
 
@@ -286,6 +293,20 @@ open class SaveItemFragment : BaseFragment(), SaveItemView {
 
             }
         })
+
+    }
+
+    @OnClick(R.id.fab_dir)
+    fun onClickDirection() {
+        val strUri = "http://maps.google.com/maps?q=loc:$latitude,$longitude (Item Location)"
+
+        val mapIntent = Intent(Intent.ACTION_VIEW, Uri.parse(strUri))
+        mapIntent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity")
+        if (mapIntent.resolveActivity(context?.packageManager) != null) {
+            startActivity(mapIntent)
+        } else {
+            Toast.makeText(context, R.string.can_not_find_google_map_installed, Toast.LENGTH_LONG).show()
+        }
 
     }
 

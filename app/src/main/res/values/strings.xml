@@ -13,4 +13,5 @@
     <string name="no_camera_application_found">No camera application found</string>
     <string name="name">Name</string>
     <string name="price">Price</string>
+    <string name="can_not_find_google_map_installed">Can not find Google Map installed</string>
 </resources>
