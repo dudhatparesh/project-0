@@ -1,7 +1,13 @@
 package com.brighterbrain.project0.utils
 
+import android.content.Context
+import android.database.Cursor
+import android.net.Uri
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationSettingsRequest
+import android.provider.MediaStore
+
+
 
 class CommonUtils {
     companion object {
@@ -20,6 +26,21 @@ class CommonUtils {
 
             return LocationSettingsRequest.Builder()
                     .addLocationRequest(getLocationRequest()).build()
+        }
+
+        fun getRealPathFromURI(context: Context, contentUri: Uri): String {
+            var cursor: Cursor? = null
+            try {
+                val proj = arrayOf(MediaStore.Images.Media.DATA)
+                cursor = context.contentResolver.query(contentUri, proj, null, null, null)
+                val columnIndex = cursor!!.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+                cursor.moveToFirst()
+                return cursor.getString(columnIndex)
+            } finally {
+                if (cursor != null) {
+                    cursor.close()
+                }
+            }
         }
     }
 }

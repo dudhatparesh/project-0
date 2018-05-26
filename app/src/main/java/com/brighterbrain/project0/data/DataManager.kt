@@ -21,15 +21,21 @@ open class DataManager @Inject constructor(@ApplicationContext private var appCo
                                            private var prefHelper: PrefHelper,
                                            private var firebaseHelper: FirebaseHelper,
                                            private var restApiHelper: RestApiHelper) {
-    fun addItem(item: Item): Completable {
+    fun addItem(item: Item, filePath: String): Completable {
         return object : Completable() {
             override fun subscribeActual(s: CompletableObserver?) {
                 try {
-                    restApiHelper
-                    val id = databaseHelper.saveItem(item)
-                    item.id = id
-                    firebaseHelper.saveItem(item)
-                    s?.onComplete()
+                    val response = restApiHelper.addItem(item, filePath).execute()
+                    if (response.isSuccessful) {
+                        if (response.body()!!.status == 200) {
+                            databaseHelper.saveItem(response.body()!!.item!!)
+                            s?.onComplete()
+                        } else {
+                            s?.onError(RuntimeException(response.body()!!.message))
+                        }
+                    } else {
+                        s?.onError(RuntimeException(response.errorBody()!!.string()))
+                    }
                 } catch (e: Exception) {
                     s?.onError(e)
                 }
@@ -43,9 +49,9 @@ open class DataManager @Inject constructor(@ApplicationContext private var appCo
                 try {
                     val response = restApiHelper.getItems().execute()
                     if (response.isSuccessful && response.body()!!.status == 200) {
-                        databaseHelper.saveItems(response.body()!!.items)
+                        databaseHelper.refillData(response.body()!!.items)
                     }
-                }catch (e:Exception){
+                } catch (e: Exception) {
                     e.printStackTrace()
                 }
                 observer.onSuccess(databaseHelper.getAllItems())

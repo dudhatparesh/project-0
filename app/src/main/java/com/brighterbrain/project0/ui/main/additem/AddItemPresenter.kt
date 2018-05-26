@@ -6,6 +6,7 @@ import com.brighterbrain.project0.R
 import com.brighterbrain.project0.data.DataManager
 import com.brighterbrain.project0.data.model.Item
 import com.brighterbrain.project0.ui.base.BasePresenter
+import com.brighterbrain.project0.utils.FileUtils
 import io.reactivex.CompletableObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -14,7 +15,7 @@ import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class AddItemPresenter @Inject constructor(var dataManager: DataManager): BasePresenter<AddItemView>(){
-    fun addItem(itemName: String, itemDesc: String, amount: String, currency: String, photoUri: String?,
+    fun addItem(itemName: String, itemDesc: String, amount: String, currency: String, photoPath: String,
                 lastLocation: Location?) {
         val addItemObserver: CompletableObserver = object : CompletableObserver {
             override fun onSubscribe(d: Disposable) {
@@ -30,11 +31,11 @@ class AddItemPresenter @Inject constructor(var dataManager: DataManager): BasePr
                 view?.displayMessage(e.localizedMessage)
             }
         }
+
         dataManager.addItem(Item(name = itemName,description = itemDesc,amount = amount.toDouble(),
-                imageName = photoUri,
                 latitude = lastLocation?.latitude,
                 longitude = lastLocation?.longitude,
-                currency = currency))
+                currency = currency),photoPath)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(addItemObserver)
@@ -62,6 +63,8 @@ class AddItemPresenter @Inject constructor(var dataManager: DataManager): BasePr
             }
 
     }
+
+
 
     var disposable = CompositeDisposable()
 

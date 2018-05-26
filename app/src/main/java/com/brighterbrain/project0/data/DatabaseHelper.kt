@@ -10,15 +10,27 @@ import javax.inject.Singleton
 class DatabaseHelper @Inject constructor(@ApplicationContext context: Context) {
     private var appDatabase: AppDatabase = AppDatabase.getInstance(context)!!
 
-    fun saveItem(item: Item): Long{
+    fun saveItem(item: Item): Long {
         return appDatabase.itemDao().insert(item)
     }
 
-    fun saveItems(items: List<Item>){
+    fun saveItems(items: List<Item>) {
         appDatabase.itemDao().insertAll(items)
     }
+
     fun getAllItems(): List<Item> {
         return appDatabase.itemDao().getAllItems()
+    }
+
+    private fun deleteAll() {
+        appDatabase.itemDao().deleteAll()
+    }
+
+    fun refillData(items: List<Item>) {
+        appDatabase.runInTransaction {
+            deleteAll()
+            saveItems(items)
+        }
     }
 
 }
