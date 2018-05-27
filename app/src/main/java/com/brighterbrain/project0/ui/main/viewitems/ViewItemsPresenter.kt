@@ -15,15 +15,15 @@ open class ViewItemsPresenter
 @Inject constructor(var dataManager: DataManager)
     : BasePresenter<ViewItemsMvpView>() {
 
-    val disposable: CompositeDisposable = CompositeDisposable()
+    val compositeDisposable: CompositeDisposable = CompositeDisposable()
     fun loadItems() {
         val itemsObserver: SingleObserver<List<Item>> = object : SingleObserver<List<Item>> {
-            override fun onSuccess(t: List<Item>) {
-                view?.displayItems(t)
+            override fun onSuccess(items: List<Item>) {
+                view?.displayItems(items)
             }
 
-            override fun onSubscribe(d: Disposable) {
-                disposable.add(d)
+            override fun onSubscribe(disposable: Disposable) {
+                compositeDisposable.add(disposable)
             }
 
             override fun onError(e: Throwable) {
@@ -35,5 +35,9 @@ open class ViewItemsPresenter
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(itemsObserver)
+    }
+    override fun detachView() {
+        compositeDisposable.dispose()
+        super.detachView()
     }
 }

@@ -14,4 +14,6 @@ interface SaveItemView: MvpView{
     fun checkLocationSettings()
     fun saveItem()
     fun fillData(item: Item)
+    fun displayProgressDialog()
+    fun hideProgressDialog()
 }

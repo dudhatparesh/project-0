@@ -37,7 +37,8 @@ class ViewItemsFragment : BaseFragment(), ViewItemsMvpView {
 
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_items, container, false)
             ButterKnife.bind(this, rootView!!)
@@ -61,6 +62,11 @@ class ViewItemsFragment : BaseFragment(), ViewItemsMvpView {
     @OnClick(R.id.fab_add_item)
     fun addItem() {
         (activity as MainActivity).displayFragment(SaveItemFragment())
+    }
+
+    override fun onDestroy() {
+        viewItemsPresenter.detachView()
+        super.onDestroy()
     }
 
 }

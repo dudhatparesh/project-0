@@ -13,9 +13,11 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.ArgumentMatchers
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.Mockito.`when`
+import org.mockito.Mockito.anyString
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnit
 import org.mockito.junit.MockitoJUnitRunner
@@ -47,19 +49,19 @@ class SaveItemPresenterTest {
 
     @Test
     fun testAddItemSuccess(){
-        `when`(dataManager.saveItem(any(),"")).thenReturn(Completable.complete())
+        `when`(dataManager.saveItem(any(), ArgumentMatchers.anyString())).thenReturn(Completable.complete())
         saveItemPresenter.addItem("","","5.0","INR","",
-                null)
-        verify(saveItemView).displayMessage("Item Added")
+                null,1)
+        verify(saveItemView).displayMessage("Item Saved")
         verify(saveItemView).popBack()
     }
 
 
     @Test
     fun testAddItemError(){
-        `when`(dataManager.saveItem(any(),"")).thenReturn(Completable.error(Error("Custom Error Message")))
+        `when`(dataManager.saveItem(any(),ArgumentMatchers.anyString())).thenReturn(Completable.error(Error("Custom Error Message")))
         saveItemPresenter.addItem("","","5.0","INR","",
-                null)
+                null,1)
         verify(saveItemView).displayMessage("Custom Error Message")
     }
 

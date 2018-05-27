@@ -10,7 +10,10 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.support.design.widget.FloatingActionButton
+import android.support.v4.app.DialogFragment
+import android.support.v4.content.ContextCompat
 import android.support.v4.content.FileProvider
+import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,7 +45,7 @@ open class SaveItemFragment : BaseFragment(), SaveItemView {
 
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-
+    var progressDialog: AlertDialog? = null
     companion object {
         const val RC_CAMERA: Int = 101
         const val RC_LOCATION: Int = 102
@@ -301,7 +304,8 @@ open class SaveItemFragment : BaseFragment(), SaveItemView {
         val strUri = "http://maps.google.com/maps?q=loc:$latitude,$longitude (Item Location)"
 
         val mapIntent = Intent(Intent.ACTION_VIEW, Uri.parse(strUri))
-        mapIntent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity")
+        mapIntent.setClassName("com.google.android.apps.maps",
+                "com.google.android.maps.MapsActivity")
         if (mapIntent.resolveActivity(context?.packageManager) != null) {
             startActivity(mapIntent)
         } else {
@@ -310,5 +314,25 @@ open class SaveItemFragment : BaseFragment(), SaveItemView {
 
     }
 
+    override fun displayProgressDialog() {
+        if(progressDialog==null){
+            val dialogBuilder = AlertDialog.Builder(context!!)
+            val layoutInflater = LayoutInflater.from(context)
+            val view = layoutInflater.inflate(R.layout.dialog_progress,null)
+            dialogBuilder.setView(view)
+            dialogBuilder.setCancelable(false)
+            progressDialog = dialogBuilder.create()
+        }
+        progressDialog?.show()
+    }
+
+    override fun hideProgressDialog() {
+        progressDialog?.dismiss()
+    }
+
+    override fun onDestroy() {
+        saveItemPresenter.detachView()
+        super.onDestroy()
+    }
 
 }
