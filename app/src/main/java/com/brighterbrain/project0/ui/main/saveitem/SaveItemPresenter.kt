@@ -20,7 +20,8 @@ import javax.inject.Inject
 class SaveItemPresenter @Inject constructor(var dataManager: DataManager) : BasePresenter<SaveItemView>() {
     var compositeDisposable = CompositeDisposable()
 
-    fun addItem(itemName: String, itemDesc: String, amount: String, currency: String, photoPath: String,
+    fun addItem(itemName: String, itemDesc: String, amount: String, currency: String,
+                imagePath: String?,
                 lastLocation: Location?, itemId: Long?) {
         val addItemObserver: CompletableObserver = object : CompletableObserver {
             override fun onSubscribe(d: Disposable) {
@@ -42,7 +43,7 @@ class SaveItemPresenter @Inject constructor(var dataManager: DataManager) : Base
         dataManager.saveItem(Item(name = itemName, description = itemDesc, amount = amount.toDouble(),
                 latitude = lastLocation?.latitude,
                 longitude = lastLocation?.longitude,
-                currency = currency, id = itemId), photoPath)
+                currency = currency, id = itemId), imagePath)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(addItemObserver)

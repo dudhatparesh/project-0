@@ -136,7 +136,7 @@ open class SaveItemFragment : BaseFragment(), SaveItemView {
     override fun saveItem() {
         saveItemPresenter.addItem(etName.text.toString(), etDesc.text.toString(),
                 etAmount.text.toString(), spCurrency.selectedItem.toString(),
-                imagePath!!, lastLocation,itemId)
+                imagePath, lastLocation,itemId)
     }
 
     @OnClick(R.id.fab_delete)

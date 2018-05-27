@@ -32,7 +32,7 @@ interface WebServices {
                    @Part("latitude") latitude: RequestBody,
                    @Part("longitude") longitude: RequestBody,
                    @Part("id") id: RequestBody,
-                   @Part imageFile: MultipartBody.Part): Call<SaveItemResponse>
+                   @Part imageFile: MultipartBody.Part?): Call<SaveItemResponse>
 
     @POST("/item/delete")
     @FormUrlEncoded

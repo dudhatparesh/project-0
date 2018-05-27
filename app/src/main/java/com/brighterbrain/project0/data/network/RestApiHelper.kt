@@ -29,19 +29,26 @@ class RestApiHelper @Inject constructor() {
         return webServices.getItems()
     }
 
-    fun saveItem(item: Item, filePath: String): Call<SaveItemResponse> {
-        val file = File(filePath)
-        val reqFile = RequestBody.create(MediaType.parse("image/*"), file)
-        val body = MultipartBody.Part.createFormData("file", file.name, reqFile)
-        return if (item.id == null) {
-            webServices.addItem(getRequestBody(item.name!!),
-                    getRequestBody(item.description!!),
-                    getRequestBody(item.amount!!.toString()),
-                    getRequestBody(item.currency!!),
-                    getRequestBody(item.latitude!!.toString()),
-                    getRequestBody(item.longitude!!.toString()), body)
+    fun saveItem(item: Item, filePath: String?): Call<SaveItemResponse> {
+        var body: MultipartBody.Part? = null
+        if(filePath!=null) {
+            val file = File(filePath)
+            val reqFile = RequestBody.create(MediaType.parse("image/*"), file)
+            body = MultipartBody.Part.createFormData("file", file.name, reqFile)
+        }
+         if (item.id == null) {
+            if(body!=null) {
+                return webServices.addItem(getRequestBody(item.name!!),
+                        getRequestBody(item.description!!),
+                        getRequestBody(item.amount!!.toString()),
+                        getRequestBody(item.currency!!),
+                        getRequestBody(item.latitude!!.toString()),
+                        getRequestBody(item.longitude!!.toString()), body)
+            }else{
+                throw RuntimeException("File must be selected for adding new Item")
+            }
         } else {
-            webServices.updateItem(getRequestBody(item.name!!),
+            return webServices.updateItem(getRequestBody(item.name!!),
                     getRequestBody(item.description!!),
                     getRequestBody(item.amount!!.toString()),
                     getRequestBody(item.currency!!),

@@ -20,7 +20,7 @@ open class DataManager @Inject constructor(@ApplicationContext private var appCo
                                            private var databaseHelper: DatabaseHelper,
                                            private var prefHelper: PrefHelper,
                                            private var restApiHelper: RestApiHelper) {
-    fun saveItem(item: Item, filePath: String): Completable {
+    fun saveItem(item: Item, filePath: String?): Completable {
         return object : Completable() {
             override fun subscribeActual(s: CompletableObserver?) {
                 try {
