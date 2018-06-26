@@ -2,7 +2,6 @@ package com.brighterbrain.project0.ui.main
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import com.brighterbrain.project0.R
 import com.brighterbrain.project0.ui.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
@@ -29,10 +28,10 @@ class MainActivity : BaseActivity(), MainMvpView {
         mainPresenter.displayFragment(FRAGMENT_LIST_ITEMS, false)
     }
 
-    override fun displayFragment(fragment: Fragment, addToBackstack: Boolean) {
+    override fun displayFragment(fragment: Fragment, addToBackStack: Boolean) {
 
         val transaction = supportFragmentManager.beginTransaction().replace(R.id.container, fragment)
-        if (addToBackstack) {
+        if (addToBackStack) {
             transaction.addToBackStack("")
         }
         transaction.commit()

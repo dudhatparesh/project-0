@@ -9,8 +9,7 @@ import dagger.Component
 @PerFragment
 @Component(dependencies = [ApplicationComponent::class],
         modules = [FragmentModule::class])
-interface FragmentComponent{
+interface FragmentComponent {
     fun inject(viewItemsFragment: ViewItemsFragment)
     fun inject(viewItemsFragment: SaveItemFragment)
-
 }

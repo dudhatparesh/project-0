@@ -15,17 +15,16 @@ import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnit
 import org.mockito.junit.MockitoJUnitRunner
+import org.mockito.junit.MockitoRule
 
 @RunWith(MockitoJUnitRunner::class)
 class MainPresenterTest {
     @Rule
     @JvmField
-    val rule = MockitoJUnit.rule()
-
+    val rule: MockitoRule = MockitoJUnit.rule()
 
     @Mock
     lateinit var mainMvpView: MainMvpView
-
 
     lateinit var mainPresenter: MainPresenter
     @Before
@@ -40,7 +39,6 @@ class MainPresenterTest {
         mainPresenter.displayFragment(MainActivity.FRAGMENT_ADD_ITEM, true)
         verify(mainMvpView).displayFragment(any<SaveItemFragment>(), any())
     }
-
 
     @Test
     fun checkDisplayFragmentViewItems() {
